@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minor preview helpers */
+.prose :where(pre):not(:where(.not-prose *)) {
+  background: #0b0b0b; color: #e8e8e8; padding: 1rem; border-radius: 0.75rem; overflow:auto;
+}

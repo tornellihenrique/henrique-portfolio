@@ -1,0 +1,1 @@
+Place cover.jpg or GIFs for GhostRush here.

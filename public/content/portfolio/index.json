@@ -1,0 +1,25 @@
+[
+  {
+    "slug": "ghostrush",
+    "title": "GhostRush \u2014 FPS Horror Prototype",
+    "summary": "UE5 FPS horror prototype using GAS; weapon loop, procedural aim offset, networked firing.",
+    "tags": [
+      "Unreal",
+      "C++",
+      "GAS"
+    ],
+    "year": 2025,
+    "thumb": "/content/portfolio/ghostrush/cover.jpg"
+  },
+  {
+    "slug": "minecraft-royale",
+    "title": "Minecraft Royale \u2014 Clash Royale-like (UE5)",
+    "summary": "Card abilities, gameplay cues, attributes; full loop with GAS.",
+    "tags": [
+      "Unreal",
+      "GAS",
+      "Gameplay"
+    ],
+    "year": 2024
+  }
+]
