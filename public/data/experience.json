@@ -1,0 +1,72 @@
+[
+  {
+    "company": "Nevith Games",
+    "role": "Gameplay Programmer (C++)",
+    "location": "Remote — South Korea",
+    "start": "Aug 2023",
+    "end": "Present",
+    "bullets": [
+      {
+        "text": "Implemented FPS gameplay loops (weapons, abilities, hit reactions)",
+        "tags": [
+          "tech"
+        ]
+      },
+      {
+        "text": "Worked across prediction/replication, GAS, and animation systems",
+        "tags": [
+          "tech"
+        ]
+      },
+      {
+        "text": "Partnered with design to tune feel and pacing",
+        "tags": [
+          "mgr"
+        ]
+      }
+    ]
+  },
+  {
+    "company": "cVortex",
+    "role": "Senior Software Engineer",
+    "location": "Brazil",
+    "start": "Oct 2022",
+    "end": "Jul 2023",
+    "bullets": [
+      {
+        "text": "Microservices with Spring, Kafka, MongoDB; telemetry with Prometheus/Grafana",
+        "tags": [
+          "tech"
+        ]
+      },
+      {
+        "text": "Improved reliability and incident response with tracing (Jaeger)",
+        "tags": [
+          "mgr",
+          "tech"
+        ]
+      }
+    ]
+  },
+  {
+    "company": "Callink",
+    "role": "Software Architect & Tech Lead → Full-Stack Developer",
+    "location": "Brazil",
+    "start": "Jan 2021",
+    "end": "Oct 2022",
+    "bullets": [
+      {
+        "text": "Led product roadmap; split work, reviewed code, mentored devs",
+        "tags": [
+          "mgr"
+        ]
+      },
+      {
+        "text": "Spring Boot, Elasticsearch, PostgreSQL, GCP; CI/CD with Jenkins",
+        "tags": [
+          "tech"
+        ]
+      }
+    ]
+  }
+]

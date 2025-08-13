@@ -1,0 +1,37 @@
+{
+  "name": "Henrique Tornelli Duarte",
+  "title": "C++ Gameplay Programmer — Unreal Engine",
+  "location": "São Paulo, Brazil",
+  "email": "tornelli.henrique@gmail.com",
+  "phone": "+55 (34) 99639-4089",
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/henrique-tornelli",
+    "github": "https://github.com/",
+    "youtube": "https://youtube.com/"
+  },
+  "summary": "Gameplay programmer focused on FPS, networking, prediction, and animation systems. Prior background in backend/microservices.",
+  "highlights": [
+    {
+      "label": "Unreal Engine 5",
+      "value": "Expert"
+    },
+    {
+      "label": "C++",
+      "value": "Advanced"
+    },
+    {
+      "label": "GAS",
+      "value": "Advanced"
+    },
+    {
+      "label": "Networking",
+      "value": "Experienced"
+    }
+  ],
+  "rolesOpenTo": [
+    "Gameplay Programmer",
+    "Gameplay Systems",
+    "Networked Gameplay",
+    "Software Developer"
+  ]
+}

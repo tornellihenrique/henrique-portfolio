@@ -1,0 +1,33 @@
+[
+  {
+    "group": "Game/Realtime",
+    "items": [
+      "Unreal Engine 5",
+      "GAS",
+      "Replication & Prediction",
+      "Animation Systems",
+      "C++",
+      "AI/BT/EQS"
+    ]
+  },
+  {
+    "group": "Engine/Graphics",
+    "items": [
+      "OpenGL basics",
+      "ImGui",
+      "Profiling",
+      "Optimization"
+    ]
+  },
+  {
+    "group": "Backend (past)",
+    "items": [
+      "Java/Spring",
+      "Kafka",
+      "MongoDB",
+      "Redis",
+      "Docker",
+      "GCP/AWS"
+    ]
+  }
+]
