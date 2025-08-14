@@ -10,6 +10,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import { HashLink } from "react-router-hash-link";
 import {
   Mail,
   Linkedin,
@@ -284,21 +285,21 @@ function Nav({ profile }) {
           {(profile?.name || "").split(" ").slice(-1)[0]?.slice(0, 1)}
         </Link>
         <div className="hidden md:flex items-center gap-6 text-sm">
-          <a href="#about" className="hover:underline">
+          <HashLink smooth to="/#about">
             About
-          </a>
-          <a href="#experience" className="hover:underline">
+          </HashLink>
+          <HashLink smooth to="/#experience">
             Experience
-          </a>
-          <a href="#skills" className="hover:underline">
+          </HashLink>
+          <HashLink smooth to="/#skills">
             Skills
-          </a>
-          <a href="#portfolio" className="hover:underline">
+          </HashLink>
+          <HashLink smooth to="/#portfolio">
             Portfolio
-          </a>
-          <a href="#contact" className="hover:underline">
+          </HashLink>
+          <HashLink smooth to="/#contact">
             Contact
-          </a>
+          </HashLink>
           <button
             aria-label="Toggle theme"
             className="p-2 rounded-xl border dark:border-zinc-800"
@@ -353,18 +354,18 @@ function Hero({ profile }) {
             ))}
           </div>
           <div className="mt-6 flex gap-3">
-            <a
+            <HashLink
               className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-              href="#portfolio"
+              smooth to="/#portfolio"
             >
               View Portfolio <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
+            </HashLink>
+            <HashLink
               className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-              href="#contact"
+              smooth to="/#contact"
             >
               Contact <Mail className="h-4 w-4" />
-            </a>
+            </HashLink>
           </div>
         </div>
         <div className="rounded-2xl border p-4 dark:border-zinc-800">
