@@ -22,5 +22,107 @@
     "tags": ["Unreal", "C++", "Multiplayer", "GAS"],
     "year": 2025,
     "cover": "content/portfolio/flag-capture/cover.jpg"
+  },
+  {
+    "slug": "fps-prototype-als",
+    "title": "FPS Prototype — ALS-Based First-Person Feel",
+    "summary": "ALS locomotion + custom first-person presentation; replicated projectile weapons, throwables (grenade/C4), and a generic item system.",
+    "tags": ["Unreal", "C++", "ALS", "Replication", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/fps-prototype-als/cover.jpg"
+  },
+  {
+    "slug": "ladder-system",
+    "title": "Ladder System — Replicated Climbing & Procedural IK",
+    "summary": "Replicated ladder climbing with procedural rung IK for hands/feet, modular ladder actor via splines, climb-from-top, slide, and pipe support.",
+    "tags": ["Unreal", "C++", "Replication", "IK", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/ladder-system/cover.jpg"
+  },
+  {
+    "slug": "parasuit",
+    "title": "Parasuit — Skydive & Parachute (Replicated)",
+    "summary": "Replicated skydiving + parachute with dedicated Animation Instances, auto-open, HUD, dash/roll, and velocity prediction.",
+    "tags": ["Unreal", "C++", "Replication", "Movement", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/parasuit/cover.jpg"
+  },
+  {
+    "slug": "parkour-system",
+    "title": "Parkour — Vault, Slide & Zipline (Replicated)",
+    "summary": "Replicated vault/slide with AnimNotifies and zipline (vertical, oscillation, IK, view lock, interaction widget).",
+    "tags": [
+      "Unreal",
+      "C++",
+      "Replication",
+      "Movement",
+      "Motion Warping",
+      "Internal"
+    ],
+    "year": 2023,
+    "cover": "content/portfolio/parkour-system/cover.jpg"
+  },
+  {
+    "slug": "swim-system",
+    "title": "Swim — Water Volumes, Buoyancy & Movement (Replicated)",
+    "summary": "Replicated swim component with water volumes, buoyancy helper, horizontal/vertical swim controls, and animation integration.",
+    "tags": ["Unreal", "C++", "Replication", "Movement", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/swim-system/cover.jpg"
+  },
+  {
+    "slug": "cover-system",
+    "title": "Cover System — Lean, Corners & Auto-Cover (Replicated)",
+    "summary": "Replicated cover with line-trace detection, corners, leaning (manual/auto), shoulder swap, cover change (motion warping/roll/auto-walk), and widget.",
+    "tags": ["Unreal", "C++", "Replication", "Animation", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/cover-system/cover.jpg"
+  },
+  {
+    "slug": "grapple-system",
+    "title": "Grapple — Player Interactions & Assassination (Replicated)",
+    "summary": "Replicated two-action player interaction system (ally carry/drag, enemy grab/assassinate) with synced anims, IK hands, and semi-ragdoll on the target.",
+    "tags": ["Unreal", "C++", "Replication", "Animation", "IK", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/grapple-system/cover.jpg"
+  },
+  {
+    "slug": "grappling-hook",
+    "title": "Grappling Hook — Physics Pull & One-Handed Use (Replicated)",
+    "summary": "Throw a hook to any surface; on hit, apply physics pull to the player. One-handed state machine (masked) so weapons remain usable.",
+    "tags": ["Unreal", "C++", "Replication", "Movement", "Internal"],
+    "year": 2023,
+    "cover": "content/portfolio/grappling-hook/cover.jpg"
+  },
+  {
+    "slug": "project-reima",
+    "title": "Reima — First/Third-Person Combat Prototype",
+    "summary": "ALS retargeted to UE5 Manny/Metahuman, FP/TP switch, spatial equipment inventory, holster/attach system, limp overlay, explosives & bullet physics, damage/death, and a drivable car rewritten from the Matrix demo.",
+    "tags": ["Unreal", "C++", "ALS", "Metahuman", "Vehicles", "Inventory"],
+    "year": 2024,
+    "cover": "content/portfolio/project-reima/cover.jpg"
+  },
+  {
+    "slug": "bullet-system",
+    "title": "Bullet System — Advanced Ballistics & Replicated Weapons",
+    "summary": "Teaching prototype: sub-stepped ballistics with drag & wind, penetration/ricochet, pooling; replicated weapon actor and FP sway.",
+    "tags": ["Unreal", "C++", "Ballistics", "Replication"],
+    "year": 2024,
+    "cover": "content/portfolio/bullet-system/cover.jpg"
+  },
+  {
+    "slug": "bunny-hopping",
+    "title": "Bunny Hopping — FPS Sandbox/Prototype",
+    "tags": [
+      "C++",
+      "Unreal Engine 5",
+      "ALS",
+      "Enhanced Input",
+      "Replication",
+      "Motion Warping"
+    ],
+    "year": 2025,
+    "summary": "Replicated FPS/TP system with GoldSrc-style bunny hopping, dual-mesh first/third-person pipeline, hotbar-driven inventory & weapons, team-vs-team battle mode with match phases, and a sandbox mode with UI overlays.",
+    "cover": "content/portfolio/bunny-hopping/cover.jpg"
   }
 ]

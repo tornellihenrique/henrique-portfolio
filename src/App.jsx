@@ -589,6 +589,7 @@ function Portfolio({ manifest }) {
                   {(p.tags || []).map((t, i) => (
                     <Chip key={i}>{t}</Chip>
                   ))}
+                  {p.year && <Chip>{p.year}</Chip>}
                 </div>
                 <div className="mt-3 inline-flex items-center gap-1 text-sm text-zinc-700 dark:text-zinc-300">
                   Open <ExternalLink className="h-4 w-4" />

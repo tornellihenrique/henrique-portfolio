@@ -38,4 +38,4 @@ Prototype that became a **TrueFPS** plugin-in-progress: a custom **Animation Blu
 - Solidified UE C++ knowledge around **AnimGraph**, **skeletal transforms**, and **replication**.
 
 ## Media
-![title](content/portfolio/truefps-fps-prototype/demo-1.gif)
+<img src="content/portfolio/truefps-fps-prototype/demo-1.gif" width="100%" />
