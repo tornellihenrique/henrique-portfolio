@@ -1,72 +1,108 @@
 [
   {
-    "company": "Nevith Games",
-    "role": "Gameplay Programmer (C++)",
-    "location": "Remote — South Korea",
-    "start": "Aug 2023",
-    "end": "Present",
+    "company": "Sanfir Technology Solutions",
+    "role": "Intern",
+    "location": "Uberlândia, Minas Gerais, Brazil",
+    "start": "2017-01",
+    "end": "2018-04",
+    "start_text": "Jan 2017",
+    "end_text": "Apr 2018",
+    "duration": { "months": 16, "years": 1, "monthsRemainder": 4, "text": "1 yr 4 mos" },
     "bullets": [
-      {
-        "text": "Implemented FPS gameplay loops (weapons, abilities, hit reactions)",
-        "tags": [
-          "tech"
-        ]
-      },
-      {
-        "text": "Worked across prediction/replication, GAS, and animation systems",
-        "tags": [
-          "tech"
-        ]
-      },
-      {
-        "text": "Partnered with design to tune feel and pacing",
-        "tags": [
-          "mgr"
-        ]
-      }
+      { "text": "Studied and practiced modern stacks across Java (JSF, Spring, JavaFX), JavaScript (ES, React, Angular 2+), and Python (Django).", "tags": ["tech"] },
+      { "text": "SQL (MySQL/SQL Server/Oracle/PostgreSQL) and MongoDB fundamentals; built small internal tools and prototypes.", "tags": ["tech"] },
+      { "text": "Robotics tinkering with Arduino (C/C++) and Raspberry Pi for automation projects.", "tags": ["tech"] }
     ]
   },
   {
-    "company": "cVortex",
-    "role": "Senior Software Engineer",
-    "location": "Brazil",
-    "start": "Oct 2022",
-    "end": "Jul 2023",
+    "company": "Sanfir Technology Solutions",
+    "role": "Web Developer (Outsourced to ValeCard)",
+    "location": "Uberlândia, Minas Gerais, Brazil",
+    "start": "2018-05",
+    "end": "2018-12",
+    "start_text": "May 2018",
+    "end_text": "Dec 2018",
+    "duration": { "months": 8, "years": 0, "monthsRemainder": 8, "text": "8 mos" },
     "bullets": [
-      {
-        "text": "Microservices with Spring, Kafka, MongoDB; telemetry with Prometheus/Grafana",
-        "tags": [
-          "tech"
-        ]
-      },
-      {
-        "text": "Improved reliability and incident response with tracing (Jaeger)",
-        "tags": [
-          "mgr",
-          "tech"
-        ]
-      }
+      { "text": "Enterprise Java stack with JSF, Hibernate, JPA; worked on business modules and maintenance.", "tags": ["tech"] },
+      { "text": "Advanced SQL (SQL Server/Oracle): procedures, complex queries, and performance-minded changes.", "tags": ["tech"] },
+      { "text": "Quality checks and static analysis with Sonar.", "tags": ["tech"] }
+    ]
+  },
+  {
+    "company": "Sanfir Technology Solutions",
+    "role": "Full Stack Developer (Outsourced to Callink)",
+    "location": "Uberlândia, Minas Gerais, Brazil",
+    "start": "2019-01",
+    "end": "2021-01",
+    "start_text": "Jan 2019",
+    "end_text": "Jan 2021",
+    "duration": { "months": 25, "years": 2, "monthsRemainder": 1, "text": "2 yrs 1 mo" },
+    "bullets": [
+      { "text": "Full-stack delivery using Java (Spring, JPA, Spring Boot) and Angular (2+).", "tags": ["tech"] },
+      { "text": "CI/CD and automated deployments with Docker + Jenkins.", "tags": ["tech"] },
+      { "text": "Data layer across SQL Server/Postgres and Elasticsearch; ETL with Pentaho (Kettle).", "tags": ["tech"] },
+      { "text": "Cloud deployments and ops on Google Cloud Platform.", "tags": ["tech"] }
     ]
   },
   {
     "company": "Callink",
-    "role": "Software Architect & Tech Lead → Full-Stack Developer",
-    "location": "Brazil",
-    "start": "Jan 2021",
-    "end": "Oct 2022",
+    "role": "Full Stack Developer",
+    "location": "Uberlândia, Minas Gerais, Brazil",
+    "start": "2021-01",
+    "end": "2021-09",
+    "start_text": "Jan 2021",
+    "end_text": "Sep 2021",
+    "duration": { "months": 9, "years": 0, "monthsRemainder": 9, "text": "9 mos" },
     "bullets": [
-      {
-        "text": "Led product roadmap; split work, reviewed code, mentored devs",
-        "tags": [
-          "mgr"
-        ]
-      },
-      {
-        "text": "Spring Boot, Elasticsearch, PostgreSQL, GCP; CI/CD with Jenkins",
-        "tags": [
-          "tech"
-        ]
-      }
+      { "text": "Hands-on full-stack: Java/Spring Boot services, Angular 2+, Node.js utilities.", "tags": ["tech"] },
+      { "text": "SQL (SQL Server/Postgres) and Elasticsearch; ETL with Pentaho.", "tags": ["tech"] },
+      { "text": "Automated deployments (Docker + Jenkins) and GCP environments.", "tags": ["tech"] }
+    ]
+  },
+  {
+    "company": "Callink",
+    "role": "Software Architect & Technical Leader",
+    "location": "Uberlândia, Minas Gerais, Brazil",
+    "start": "2021-09",
+    "end": "2022-10",
+    "start_text": "Sep 2021",
+    "end_text": "Oct 2022",
+    "duration": { "months": 14, "years": 1, "monthsRemainder": 2, "text": "1 yr 2 mos" },
+    "bullets": [
+      { "text": "Owned architecture and roadmap for a production product; translated requirements into deliverable slices and technical plans.", "tags": ["mgr"] },
+      { "text": "Led task breakdown, code reviews, and developer mentorship.", "tags": ["mgr"] },
+      { "text": "Tech stack: Java/Spring Boot, Elasticsearch, PostgreSQL, MongoDB, Google Cloud, Python (NLP), Speech-to-Text (Nuance/Google), Pentaho, Jenkins.", "tags": ["tech"] }
+    ]
+  },
+  {
+    "company": "cVortex",
+    "role": "Senior Software Engineer (Backend)",
+    "location": "Uberlândia, Minas Gerais, Brazil",
+    "start": "2022-10",
+    "end": "2023-07",
+    "start_text": "Oct 2022",
+    "end_text": "Jul 2023",
+    "duration": { "months": 10, "years": 0, "monthsRemainder": 10, "text": "10 mos" },
+    "bullets": [
+      { "text": "Backend for a SaaS CRM/CEC platform: defect fixes, enhancements, and reliability improvements.", "tags": ["tech"] },
+      { "text": "Event-driven microservices (Spring ecosystem); validation with Bean Validation specs.", "tags": ["tech"] },
+      { "text": "Infra/observability: Kafka, MongoDB, Redis, Prometheus, Graylog, Grafana, Jaeger, Jenkins, GraphQL (graphql-java).", "tags": ["tech"] }
+    ]
+  },
+  {
+    "company": "Nevith Games",
+    "role": "Game Developer (C++ / Unreal Engine)",
+    "location": "South Korea (Remote)",
+    "start": "2023-08",
+    "end": null,
+    "present": true,
+    "start_text": "Aug 2023",
+    "end_text": "Present",
+    "duration": { "months": 25, "years": 2, "monthsRemainder": 1, "text": "2 yrs 1 mo (as of Aug 2025)" },
+    "bullets": [
+      { "text": "Gameplay programmer on a realistic FPS; contributed to UE C++ gameplay features and iteration with designers.", "tags": ["tech"] },
+      { "text": "Worked within Unreal Engine systems and production workflows; emphasis on code quality and performance.", "tags": ["tech"] }
     ]
   }
 ]

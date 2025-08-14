@@ -1,25 +1,26 @@
 [
   {
-    "slug": "ghostrush",
-    "title": "GhostRush \u2014 FPS Horror Prototype",
-    "summary": "UE5 FPS horror prototype using GAS; weapon loop, procedural aim offset, networked firing.",
-    "tags": [
-      "Unreal",
-      "C++",
-      "GAS"
-    ],
-    "year": 2025,
-    "thumb": "/content/portfolio/ghostrush/cover.jpg"
+    "slug": "truefps-fps-prototype",
+    "title": "TrueFPS — Procedural First-Person & Replicated FPS Prototype",
+    "summary": "Custom AnimGraph node driving TrueFPS (spine aim-offset, sway, recoil, blocking, lean) + replicated FFA shooter with attachments.",
+    "tags": ["Unreal", "C++", "AnimGraph", "Networking"],
+    "year": 2023,
+    "cover": "content/portfolio/truefps-fps-prototype/cover.jpg"
   },
   {
-    "slug": "minecraft-royale",
-    "title": "Minecraft Royale \u2014 Clash Royale-like (UE5)",
-    "summary": "Card abilities, gameplay cues, attributes; full loop with GAS.",
-    "tags": [
-      "Unreal",
-      "GAS",
-      "Gameplay"
-    ],
-    "year": 2024
+    "slug": "spatial-inventory",
+    "title": "Spatial Inventory — Replicated Grid & Component-Based Interaction",
+    "summary": "Replicated UObject-driven grid inventory with rotation/placement and a flexible interaction system; simple UMG UI.",
+    "tags": ["Unreal", "C++", "Replication", "Inventory"],
+    "year": 2022,
+    "cover": "content/portfolio/spatial-inventory/cover.jpg"
+  },
+  {
+    "slug": "flag-capture",
+    "title": "Flag Capture — Multiplayer Technical Test (UE5)",
+    "summary": "Phase-driven CTF built from UE5 FP template: replicated timers/teams/scores, team-aware spawns, controller state machine, flag events, and UI hooks; brief-compliant with BP limited to data/UI.",
+    "tags": ["Unreal", "C++", "Multiplayer", "GAS"],
+    "year": 2025,
+    "cover": "content/portfolio/flag-capture/cover.jpg"
   }
 ]

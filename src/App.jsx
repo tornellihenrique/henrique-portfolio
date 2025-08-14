@@ -1,8 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { HashRouter as Router, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Mail, Linkedin, Github, Youtube, MapPin, ExternalLink, ArrowRight, Phone, Briefcase, Code2, GraduationCap, Wrench, Cpu, Shield, ChevronRight, Moon, Sun } from "lucide-react";
+import rehypeRaw from "rehype-raw";
+import {
+  Mail,
+  Linkedin,
+  Github,
+  Youtube,
+  MapPin,
+  ExternalLink,
+  ArrowRight,
+  Phone,
+  Briefcase,
+  Code2,
+  GraduationCap,
+  Wrench,
+  Cpu,
+  Shield,
+  ChevronRight,
+  Moon,
+  Sun,
+} from "lucide-react";
 
 /*  App.jsx (refactored)
     --------------------
@@ -37,6 +63,28 @@ async function fetchText(relPath, fallback) {
   }
 }
 
+const isAbs = (u) =>
+  /^([a-z]+:)?\/\//i.test(u) || u?.startsWith("data:") || u?.startsWith("#");
+const addBase = (u) =>
+  isAbs(u) ? u : withBase(String(u || "").replace(/^\/+/, ""));
+const ImgMD = (props) => (
+  <img
+    {...props}
+    src={addBase(props.src)}
+    loading="lazy"
+    className="rounded-xl"
+  />
+);
+const VideoMD = (props) => (
+  <video
+    {...props}
+    src={props.src ? addBase(props.src) : undefined}
+    controls
+    className="w-full rounded-2xl border dark:border-zinc-800"
+  />
+);
+const SourceMD = (props) => <source {...props} src={addBase(props.src)} />;
+
 // ---------- Fallbacks (kept minimal to avoid blank UI if JSON missing) ----------
 const FALLBACK = {
   profile: {
@@ -48,20 +96,22 @@ const FALLBACK = {
     links: { linkedin: "#", github: "#", youtube: "#" },
     summary: "Short professional summary.",
     highlights: [{ label: "Skill A", value: "Advanced" }],
-    rolesOpenTo: ["Role 1", "Role 2"]
+    rolesOpenTo: ["Role 1", "Role 2"],
   },
   experience: [],
   skills: [],
   education: [],
   settings: {
-    hrBlurb: "Short HR-friendly blurb can go here."
+    hrBlurb: "Short HR-friendly blurb can go here.",
   },
-  portfolioManifest: []
+  portfolioManifest: [],
 };
 
 // ---------- Frontmatter parsing (robust) ----------
 function parseFrontmatterBlock(fullText) {
-  const match = fullText.match(/^---\s*[\r\n]+([\s\S]*?)^---\s*[\r\n]+([\s\S]*)$/m);
+  const match = fullText.match(
+    /^---\s*[\r\n]+([\s\S]*?)^---\s*[\r\n]+([\s\S]*)$/m
+  );
   if (!match) return { meta: null, body: fullText };
   return { meta: parseFrontmatter(match[1]), body: match[2] };
 }
@@ -72,7 +122,10 @@ function parseFrontmatter(src) {
   let i = 0;
   while (i < lines.length) {
     const line = lines[i];
-    if (!line.trim()) { i++; continue; }
+    if (!line.trim()) {
+      i++;
+      continue;
+    }
     const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (m) {
       const key = m[1].trim();
@@ -92,7 +145,11 @@ function parseFrontmatter(src) {
       }
 
       if (val.startsWith("[") && val.endsWith("]")) {
-        try { obj[key] = JSON.parse(val); } catch { obj[key] = val; }
+        try {
+          obj[key] = JSON.parse(val);
+        } catch {
+          obj[key] = val;
+        }
       } else {
         obj[key] = val;
       }
@@ -120,7 +177,9 @@ function Section({ title, icon: Icon, right, children, id }) {
         </h2>
         {right}
       </div>
-      <div className="rounded-2xl border p-4 dark:border-zinc-800">{children}</div>
+      <div className="rounded-2xl border p-4 dark:border-zinc-800">
+        {children}
+      </div>
     </section>
   );
 }
@@ -130,7 +189,10 @@ function useTheme() {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem("theme");
     if (saved) return saved;
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    return window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   });
   useEffect(() => {
     const root = document.documentElement;
@@ -143,7 +205,9 @@ function useTheme() {
 
 // ---------- Audience context ----------
 const AudienceContext = React.createContext(null);
-function useAudience(){ return React.useContext(AudienceContext); }
+function useAudience() {
+  return React.useContext(AudienceContext);
+}
 
 function AudienceToggle() {
   const [audience, setAudience] = useAudience();
@@ -152,9 +216,19 @@ function AudienceToggle() {
       {[
         { key: "all", label: "All" },
         { key: "tech", label: "Technical" },
-        { key: "mgr", label: "Manager/HR" }
-      ].map(opt => (
-        <button key={opt.key} onClick={() => setAudience(opt.key)} className={`px-2 py-1 rounded-lg ${audience===opt.key? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900":""}`}>{opt.label}</button>
+        { key: "mgr", label: "Manager/HR" },
+      ].map((opt) => (
+        <button
+          key={opt.key}
+          onClick={() => setAudience(opt.key)}
+          className={`px-2 py-1 rounded-lg ${
+            audience === opt.key
+              ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+              : ""
+          }`}
+        >
+          {opt.label}
+        </button>
       ))}
     </div>
   );
@@ -169,20 +243,29 @@ function useSiteData() {
     education: FALLBACK.education,
     settings: FALLBACK.settings,
     manifest: FALLBACK.portfolioManifest,
-    loading: true
+    loading: true,
   });
 
   useEffect(() => {
     (async () => {
-      const [profile, experience, skills, education, settings, manifest] = await Promise.all([
-        fetchJSON("data/profile.json", FALLBACK.profile),
-        fetchJSON("data/experience.json", FALLBACK.experience),
-        fetchJSON("data/skills.json", FALLBACK.skills),
-        fetchJSON("data/education.json", FALLBACK.education),
-        fetchJSON("data/settings.json", FALLBACK.settings),
-        fetchJSON("content/portfolio/index.json", FALLBACK.portfolioManifest)
-      ]);
-      setData({ profile, experience, skills, education, settings, manifest, loading: false });
+      const [profile, experience, skills, education, settings, manifest] =
+        await Promise.all([
+          fetchJSON("data/profile.json", FALLBACK.profile),
+          fetchJSON("data/experience.json", FALLBACK.experience),
+          fetchJSON("data/skills.json", FALLBACK.skills),
+          fetchJSON("data/education.json", FALLBACK.education),
+          fetchJSON("data/settings.json", FALLBACK.settings),
+          fetchJSON("content/portfolio/index.json", FALLBACK.portfolioManifest),
+        ]);
+      setData({
+        profile,
+        experience,
+        skills,
+        education,
+        settings,
+        manifest,
+        loading: false,
+      });
     })();
   }, []);
 
@@ -196,23 +279,54 @@ function Nav({ profile }) {
   return (
     <nav className="sticky top-0 z-40 w-full backdrop-blur border-b bg-white/70 dark:bg-zinc-950/60 dark:border-zinc-900">
       <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="font-semibold tracking-tight">{(profile?.name || "HT").split(" ")[0].slice(0,1)}{(profile?.name || "").split(" ").slice(-1)[0]?.slice(0,1)}</Link>
+        <Link to="/" className="font-semibold tracking-tight">
+          {(profile?.name || "HT").split(" ")[0].slice(0, 1)}
+          {(profile?.name || "").split(" ").slice(-1)[0]?.slice(0, 1)}
+        </Link>
         <div className="hidden md:flex items-center gap-6 text-sm">
-          <a href="#about" className="hover:underline">About</a>
-          <a href="#experience" className="hover:underline">Experience</a>
-          <a href="#skills" className="hover:underline">Skills</a>
-          <a href="#portfolio" className="hover:underline">Portfolio</a>
-          <a href="#contact" className="hover:underline">Contact</a>
-          <button aria-label="Toggle theme" className="p-2 rounded-xl border dark:border-zinc-800" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            {theme === 'dark' ? <Sun className="h-4 w-4"/> : <Moon className="h-4 w-4"/>}
+          <a href="#about" className="hover:underline">
+            About
+          </a>
+          <a href="#experience" className="hover:underline">
+            Experience
+          </a>
+          <a href="#skills" className="hover:underline">
+            Skills
+          </a>
+          <a href="#portfolio" className="hover:underline">
+            Portfolio
+          </a>
+          <a href="#contact" className="hover:underline">
+            Contact
+          </a>
+          <button
+            aria-label="Toggle theme"
+            className="p-2 rounded-xl border dark:border-zinc-800"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {theme === "dark" ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
           </button>
         </div>
-        <button className="md:hidden p-2" onClick={() => setOpen(!open)}>{open ? <Shield/> : <ChevronRight/>}</button>
+        <button className="md:hidden p-2" onClick={() => setOpen(!open)}>
+          {open ? <Shield /> : <ChevronRight />}
+        </button>
       </div>
       {open && (
         <div className="md:hidden border-t dark:border-zinc-900 px-4 pb-3 space-y-2">
-          {[["#about","About"],["#experience","Experience"],["#skills","Skills"],["#portfolio","Portfolio"],["#contact","Contact"]].map(([href,label]) => (
-            <a key={href} href={href} className="block py-1">{label}</a>
+          {[
+            ["#about", "About"],
+            ["#experience", "Experience"],
+            ["#skills", "Skills"],
+            ["#portfolio", "Portfolio"],
+            ["#contact", "Contact"],
+          ].map(([href, label]) => (
+            <a key={href} href={href} className="block py-1">
+              {label}
+            </a>
           ))}
         </div>
       )}
@@ -225,30 +339,93 @@ function Hero({ profile }) {
     <header className="pt-10 pb-6">
       <div className="mx-auto max-w-6xl px-4 grid md:grid-cols-[1.2fr,0.8fr] gap-8 items-center">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{profile.name}</h1>
-          <p className="mt-2 text-lg text-zinc-600 dark:text-zinc-300">{profile.title}</p>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+            {profile.name}
+          </h1>
+          <p className="mt-2 text-lg text-zinc-600 dark:text-zinc-300">
+            {profile.title}
+          </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {profile.highlights?.map((h, i) => (
-              <Chip key={i}>{h.label}: {h.value}</Chip>
+              <Chip key={i}>
+                {h.label}: {h.value}
+              </Chip>
             ))}
           </div>
           <div className="mt-6 flex gap-3">
-            <a className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800" href="#portfolio">
-              View Portfolio <ArrowRight className="h-4 w-4"/>
+            <a
+              className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+              href="#portfolio"
+            >
+              View Portfolio <ArrowRight className="h-4 w-4" />
             </a>
-            <a className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800" href="#contact">
-              Contact <Mail className="h-4 w-4"/>
+            <a
+              className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+              href="#contact"
+            >
+              Contact <Mail className="h-4 w-4" />
             </a>
           </div>
         </div>
         <div className="rounded-2xl border p-4 dark:border-zinc-800">
           <ul className="text-sm space-y-2">
-            {!!profile.location && <li className="flex items-center gap-2"><MapPin className="h-4 w-4"/> {profile.location}</li>}
-            {!!profile.email && <li className="flex items-center gap-2"><Mail className="h-4 w-4"/> <a href={`mailto:${profile.email}`} className="underline">{profile.email}</a></li>}
-            {!!profile.phone && <li className="flex items-center gap-2"><Phone className="h-4 w-4"/> <a href={`tel:${profile.phone}`} className="underline">{profile.phone}</a></li>}
-            {profile.links?.linkedin && <li className="flex items-center gap-2"><Linkedin className="h-4 w-4"/> <a className="underline" href={profile.links.linkedin} target="_blank">LinkedIn</a></li>}
-            {profile.links?.github &&   <li className="flex items-center gap-2"><Github className="h-4 w-4"/> <a className="underline" href={profile.links.github} target="_blank">GitHub</a></li>}
-            {profile.links?.youtube &&  <li className="flex items-center gap-2"><Youtube className="h-4 w-4"/> <a className="underline" href={profile.links.youtube} target="_blank">YouTube</a></li>}
+            {!!profile.location && (
+              <li className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" /> {profile.location}
+              </li>
+            )}
+            {!!profile.email && (
+              <li className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />{" "}
+                <a href={`mailto:${profile.email}`} className="underline">
+                  {profile.email}
+                </a>
+              </li>
+            )}
+            {!!profile.phone && (
+              <li className="flex items-center gap-2">
+                <Phone className="h-4 w-4" />{" "}
+                <a href={`tel:${profile.phone}`} className="underline">
+                  {profile.phone}
+                </a>
+              </li>
+            )}
+            {profile.links?.linkedin && (
+              <li className="flex items-center gap-2">
+                <Linkedin className="h-4 w-4" />{" "}
+                <a
+                  className="underline"
+                  href={profile.links.linkedin}
+                  target="_blank"
+                >
+                  LinkedIn
+                </a>
+              </li>
+            )}
+            {profile.links?.github && (
+              <li className="flex items-center gap-2">
+                <Github className="h-4 w-4" />{" "}
+                <a
+                  className="underline"
+                  href={profile.links.github}
+                  target="_blank"
+                >
+                  GitHub
+                </a>
+              </li>
+            )}
+            {profile.links?.youtube && (
+              <li className="flex items-center gap-2">
+                <Youtube className="h-4 w-4" />{" "}
+                <a
+                  className="underline"
+                  href={profile.links.youtube}
+                  target="_blank"
+                >
+                  YouTube
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       </div>
@@ -259,9 +436,13 @@ function Hero({ profile }) {
 function About({ profile }) {
   return (
     <Section id="about" title="About" icon={Code2}>
-      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">{profile.summary}</p>
+      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+        {profile.summary}
+      </p>
       <div className="mt-4 flex flex-wrap gap-2">
-        {profile.rolesOpenTo?.map((r, i) => <Chip key={i}>{r}</Chip>)}
+        {profile.rolesOpenTo?.map((r, i) => (
+          <Chip key={i}>{r}</Chip>
+        ))}
       </div>
     </Section>
   );
@@ -270,19 +451,42 @@ function About({ profile }) {
 function Experience({ items }) {
   const [audience] = useAudience();
   return (
-    <Section id="experience" title="Experience" icon={Briefcase} right={<AudienceToggle/>}>
+    <Section
+      id="experience"
+      title="Experience"
+      icon={Briefcase}
+      right={<AudienceToggle />}
+    >
       <div className="space-y-6">
         {items.map((e, idx) => (
           <div key={idx} className="grid md:grid-cols-[1fr,2fr] gap-3">
             <div>
               <div className="font-medium">{e.role}</div>
-              <div className="text-sm text-zinc-500">{e.company}{e.location ? ` • ${e.location}` : ""}</div>
-              <div className="text-xs text-zinc-500">{e.start} — {e.end}</div>
+              <div className="text-sm text-zinc-500">
+                {e.company}
+                {e.location ? ` • ${e.location}` : ""}
+              </div>
+              <div className="text-xs text-zinc-500 flex items-center gap-2">
+                <span>
+                  {(e.start_text ?? e.start) || ""}
+                  {" — "}
+                  {(e.end_text ?? (e.present ? "Present" : e.end)) || ""}
+                </span>
+                {e.duration?.text && <Chip>{e.duration.text}</Chip>}
+              </div>
             </div>
             <ul className="list-disc pl-5 space-y-1 text-zinc-700 dark:text-zinc-300">
               {(e.bullets || [])
-                .filter(b => audience === 'all' || (audience === 'tech' ? b.tags?.includes('tech') : b.tags?.includes('mgr')))
-                .map((b, i) => <li key={i}>{b.text}</li>)}
+                .filter(
+                  (b) =>
+                    audience === "all" ||
+                    (audience === "tech"
+                      ? b.tags?.includes("tech")
+                      : b.tags?.includes("mgr"))
+                )
+                .map((b, i) => (
+                  <li key={i}>{b.text}</li>
+                ))}
             </ul>
           </div>
         ))}
@@ -299,7 +503,9 @@ function Skills({ groups }) {
           <div key={i} className="rounded-2xl border p-4 dark:border-zinc-800">
             <div className="font-medium mb-2">{grp.group}</div>
             <div className="flex flex-wrap gap-2">
-              {(grp.items || []).map((it, j) => <Chip key={j}>{it}</Chip>)}
+              {(grp.items || []).map((it, j) => (
+                <Chip key={j}>{it}</Chip>
+              ))}
             </div>
           </div>
         ))}
@@ -311,14 +517,41 @@ function Skills({ groups }) {
 function Education({ items }) {
   return (
     <Section title="Education" icon={GraduationCap}>
-      <ul className="space-y-2">
+      <div className="space-y-4">
         {items.map((e, i) => (
-          <li key={i} className="flex items-center justify-between">
-            <span>{e.name}</span>
-            <span className="text-sm text-zinc-500">{e.period}</span>
-          </li>
+          <div key={i} className="rounded-2xl border p-4 dark:border-zinc-800">
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{e.name}</span>
+              <span className="text-sm text-zinc-500">{e.period}</span>
+            </div>
+            {e.summary && (
+              <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
+                {e.summary}
+              </p>
+            )}
+            {e.finalWorkTitle && e.finalWorkTitle.trim() && (
+              <div className="mt-2 text-sm">
+                <strong>Final work:</strong> {e.finalWorkTitle}
+              </div>
+            )}
+            {Array.isArray(e.links) && e.links.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {e.links.map((l, idx) => (
+                  <a
+                    key={idx}
+                    href={l.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-sm underline"
+                  >
+                    {l.title}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
     </Section>
   );
 }
@@ -342,13 +575,34 @@ function Portfolio({ manifest }) {
       {!loading && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((p) => (
-            <button key={p.slug} onClick={() => navigate(`/portfolio/${p.slug}`)} className="text-left rounded-2xl border p-4 hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800">
-              <div className="font-medium">{p.title}</div>
-              <div className="mt-1 text-sm text-zinc-500">{p.summary}</div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {(p.tags || []).map((t, i) => <Chip key={i}>{t}</Chip>)}
+            <button
+              key={p.slug}
+              onClick={() => navigate(`/portfolio/${p.slug}`)}
+              className="text-left rounded-2xl border p-4 hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800 flex"
+            >
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{p.title}</div>
+                <div className="mt-1 text-sm text-zinc-500 line-clamp-2">
+                  {p.summary}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(p.tags || []).map((t, i) => (
+                    <Chip key={i}>{t}</Chip>
+                  ))}
+                </div>
+                <div className="mt-3 inline-flex items-center gap-1 text-sm text-zinc-700 dark:text-zinc-300">
+                  Open <ExternalLink className="h-4 w-4" />
+                </div>
               </div>
-              <div className="mt-3 inline-flex items-center gap-1 text-sm text-zinc-700 dark:text-zinc-300">Open <ExternalLink className="h-4 w-4"/></div>
+
+              {p.cover && (
+                <img
+                  src={withBase(p.cover)}
+                  alt=""
+                  loading="lazy"
+                  className="ml-3 hidden sm:block h-16 w-28 object-cover rounded-lg shrink-0"
+                />
+              )}
             </button>
           ))}
         </div>
@@ -362,38 +616,79 @@ function Contact({ profile, settings }) {
     <Section id="contact" title="Contact" icon={Mail}>
       <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">Prefer email for opportunities:</div>
-          <div className="mt-1 text-lg"><a className="underline" href={`mailto:${profile.email}`}>{profile.email}</a></div>
-          <div className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">Or reach me on:</div>
+          <div className="text-sm text-zinc-600 dark:text-zinc-400">
+            Prefer email for opportunities:
+          </div>
+          <div className="mt-1 text-lg">
+            <a className="underline" href={`mailto:${profile.email}`}>
+              {profile.email}
+            </a>
+          </div>
+          <div className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+            Or reach me on:
+          </div>
           <div className="mt-2 flex flex-wrap gap-2">
-            {profile.links?.linkedin && <a className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800" href={profile.links.linkedin} target="_blank" rel="noreferrer"><Linkedin className="h-4 w-4"/> LinkedIn</a>}
-            {profile.links?.youtube  && <a className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800" href={profile.links.youtube}  target="_blank" rel="noreferrer"><Youtube  className="h-4 w-4"/> YouTube</a>}
-            {profile.links?.github   && <a className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800" href={profile.links.github}   target="_blank" rel="noreferrer"><Github   className="h-4 w-4"/> GitHub</a>}
+            {profile.links?.linkedin && (
+              <a
+                className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                href={profile.links.linkedin}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Linkedin className="h-4 w-4" /> LinkedIn
+              </a>
+            )}
+            {profile.links?.youtube && (
+              <a
+                className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                href={profile.links.youtube}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Youtube className="h-4 w-4" /> YouTube
+              </a>
+            )}
+            {profile.links?.github && (
+              <a
+                className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                href={profile.links.github}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Github className="h-4 w-4" /> GitHub
+              </a>
+            )}
           </div>
         </div>
         <div className="rounded-2xl border p-4 dark:border-zinc-800">
           <div className="text-sm text-zinc-500">Quick blurb</div>
-          <p className="mt-1 text-zinc-700 dark:text-zinc-300">{settings.blurb}</p>
+          <p className="mt-1 text-zinc-700 dark:text-zinc-300">
+            {settings.blurb}
+          </p>
         </div>
       </div>
     </Section>
   );
 }
 
-function Footer(){
+function Footer() {
   return (
     <footer className="mt-10 py-8 text-center text-xs text-zinc-500">
-      © {new Date().getFullYear()} — Built with React & Tailwind. <a className="underline" href="#" onClick={() => window.print()}>Print / Save PDF</a>
+      © {new Date().getFullYear()} — Built with React & Tailwind.{" "}
+      <a className="underline" href="#" onClick={() => window.print()}>
+        Print / Save PDF
+      </a>
     </footer>
   );
 }
 
 // ---------- Portfolio Detail ----------
-function PortfolioPage(){
+function PortfolioPage() {
   const { slug } = useParams();
   const [content, setContent] = useState(null);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [manifestItem, setManifestItem] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -402,6 +697,9 @@ function PortfolioPage(){
         const { meta, body } = parseFrontmatterBlock(raw);
         setMeta(meta);
         setContent(body);
+
+        const man = await fetchJSON("content/portfolio/index.json", []);
+        setManifestItem(man.find((x) => x.slug === slug) || null);
       } catch {
         setMeta(null);
         setContent("# Not Found\nThis project will be added soon.");
@@ -411,43 +709,73 @@ function PortfolioPage(){
     })();
   }, [slug]);
 
+  const coverSrc = (meta && meta.cover) || (manifestItem && manifestItem.cover);
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <Link to="/" className="text-sm text-zinc-500 hover:underline">← Back</Link>
+      <Link to="/" className="text-sm text-zinc-500 hover:underline">
+        ← Back
+      </Link>
       {loading ? (
         <div className="mt-6 text-sm text-zinc-500">Loading…</div>
       ) : (
-        <article className="prose prose-zinc dark:prose-invert max-w-none">
+        <article className="mt-2 prose prose-zinc dark:prose-invert max-w-none">
+          {coverSrc && (
+            <img
+              src={withBase(String(coverSrc).replace(/^\/+/, ""))}
+              alt=""
+              className="w-full rounded-2xl border dark:border-zinc-800 mb-6 object-cover"
+            />
+          )}
           {meta && (
             <header>
               <h1 className="mb-2">{meta.title || slug}</h1>
               <div className="not-prose flex flex-wrap gap-2 mb-4">
-                {Array.isArray(meta.tech) && meta.tech.map((t, i) => <Chip key={i}>{t}</Chip>)}
+                {Array.isArray(meta.tech) &&
+                  meta.tech.map((t, i) => <Chip key={i}>{t}</Chip>)}
                 {meta.year && <Chip>{meta.year}</Chip>}
               </div>
               <div className="not-prose flex flex-wrap gap-2 mb-6">
                 {meta.links?.video && (
-                  <a className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-                     href={meta.links.video} target="_blank" rel="noreferrer">
+                  <a
+                    className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                    href={meta.links.video}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Youtube className="h-4 w-4" /> Watch video
                   </a>
                 )}
                 {meta.links?.github && (
-                  <a className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-                     href={meta.links.github} target="_blank" rel="noreferrer">
+                  <a
+                    className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                    href={meta.links.github}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Github className="h-4 w-4" /> Source
                   </a>
                 )}
                 {meta.links?.page && (
-                  <a className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-                     href={meta.links.page} target="_blank" rel="noreferrer">
+                  <a
+                    className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                    href={meta.links.page}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <ExternalLink className="h-4 w-4" /> Live page
                   </a>
                 )}
               </div>
             </header>
           )}
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            components={{ img: ImgMD, video: VideoMD, source: SourceMD }}
+          >
+            {content}
+          </ReactMarkdown>
         </article>
       )}
     </main>
@@ -455,7 +783,7 @@ function PortfolioPage(){
 }
 
 // ---------- App ----------
-export default function App(){
+export default function App() {
   const [audience, setAudience] = useState("all");
   const site = useSiteData();
 
@@ -463,10 +791,10 @@ export default function App(){
     <AudienceContext.Provider value={[audience, setAudience]}>
       <div className="min-h-screen bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
         <Router>
-          <Nav profile={site.profile}/>
+          <Nav profile={site.profile} />
           <Routes>
-            <Route path="/" element={<Home site={site}/>} />
-            <Route path="/portfolio/:slug" element={<PortfolioPage/>} />
+            <Route path="/" element={<Home site={site} />} />
+            <Route path="/portfolio/:slug" element={<PortfolioPage />} />
           </Routes>
         </Router>
       </div>
@@ -474,18 +802,18 @@ export default function App(){
   );
 }
 
-function Home({ site }){
+function Home({ site }) {
   return (
     <main>
-      <Hero profile={site.profile}/>
+      <Hero profile={site.profile} />
       <div className="mx-auto max-w-6xl px-4 space-y-8 pb-12">
-        <About profile={site.profile}/>
-        <Experience items={site.experience}/>
-        <Skills groups={site.skills}/>
-        <Education items={site.education}/>
-        <Portfolio manifest={site.manifest}/>
-        <Contact profile={site.profile} settings={site.settings}/>
-        <Footer/>
+        <About profile={site.profile} />
+        <Portfolio manifest={site.manifest} />
+        <Experience items={site.experience} />
+        <Skills groups={site.skills} />
+        <Education items={site.education} />
+        <Contact profile={site.profile} settings={site.settings} />
+        <Footer />
       </div>
     </main>
   );

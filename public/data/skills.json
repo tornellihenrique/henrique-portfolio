@@ -1,33 +1,26 @@
 [
   {
     "group": "Game/Realtime",
-    "items": [
-      "Unreal Engine 5",
-      "GAS",
-      "Replication & Prediction",
-      "Animation Systems",
-      "C++",
-      "AI/BT/EQS"
-    ]
+    "items": ["Unreal Engine 5", "GAS", "Replication & Prediction", "Animation Systems", "C++", "AI/BT/EQS"]
   },
   {
     "group": "Engine/Graphics",
-    "items": [
-      "OpenGL basics",
-      "ImGui",
-      "Profiling",
-      "Optimization"
-    ]
+    "items": ["OpenGL", "ImGui", "GLEW", "GLFW", "raylib", "C/C++"]
   },
   {
-    "group": "Backend (past)",
-    "items": [
-      "Java/Spring",
-      "Kafka",
-      "MongoDB",
-      "Redis",
-      "Docker",
-      "GCP/AWS"
-    ]
+    "group": "Web (Frontend)",
+    "items": ["Angular 2+", "React", "TypeScript", "RxJS", "SCSS/Tailwind", "Vite/Webpack"]
+  },
+  {
+    "group": "Web (Mobile/Hybrid)",
+    "items": ["Ionic", "Capacitor/Cordova", "PWA"]
+  },
+  {
+    "group": "Web (Backend)",
+    "items": ["Java/Spring Boot", "REST/GraphQL", "Kafka", "MongoDB", "PostgreSQL", "Redis"]
+  },
+  {
+    "group": "DevOps & Cloud",
+    "items": ["Docker", "Jenkins (CI/CD)", "GCP", "AWS", "Linux"]
   }
 ]

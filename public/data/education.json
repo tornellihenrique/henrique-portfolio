@@ -1,10 +1,18 @@
 [
   {
-    "name": "UFU — BSc Information Systems",
-    "period": "2018–2021"
+    "name": "IFSP — Technician, Informatics (alongside High School)",
+    "period": "2015 - 2017",
+    "finalWorkTitle": "Arduino-based mini vehicle controller",
+    "summary": "Technical track taken in parallel with high school. Learned basic algorithms in C++, desktop apps with Java, networking setup and scaling concepts, and web fundamentals with JS, PHP, and SQL Server. Final work was an Arduino-based RC car controlled over Bluetooth."
   },
   {
-    "name": "IFSP — Technician, Informatics",
-    "period": "2015–2017"
+    "name": "UFU — BSc Information Systems",
+    "period": "2018 - 2023",
+    "finalWorkTitle": "Logo Generation and Enhancement via Fine-Tuning in Stable Diffusion XL",
+    "summary": "Core coursework included Data Structures I/II (advanced sorting, graphs/trees, complexity/optimization), Operating Systems (kernel architecture concepts), Advanced Web (PHP/JS), Advanced OOP with Java, SQL & NoSQL databases, and software planning/documentation. Final work: trained Stable Diffusion with LoRA to generate brands/logos (multiple LoRAs for styles/legibility).",
+    "links": [
+      { "title": "Final Work PDF repository (UFU)", "url": "https://repositorio.ufu.br/handle/123456789/45883" },
+      { "title": "Final Work Github Page", "url": "https://github.com/tornellihenrique/tcc-stable-diffusion-logos" }
+    ]
   }
 ]
