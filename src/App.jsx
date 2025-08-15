@@ -29,6 +29,7 @@ import {
   ChevronRight,
   Moon,
   Sun,
+  NotebookPen,
 } from "lucide-react";
 
 /*  App.jsx (refactored)
@@ -288,14 +289,14 @@ function Nav({ profile }) {
           <HashLink smooth to="/#about">
             About
           </HashLink>
+          <HashLink smooth to="/#portfolio">
+            Portfolio
+          </HashLink>
           <HashLink smooth to="/#experience">
             Experience
           </HashLink>
           <HashLink smooth to="/#skills">
             Skills
-          </HashLink>
-          <HashLink smooth to="/#portfolio">
-            Portfolio
           </HashLink>
           <HashLink smooth to="/#contact">
             Contact
@@ -320,9 +321,9 @@ function Nav({ profile }) {
         <div className="md:hidden border-t dark:border-zinc-900 px-4 pb-3 space-y-2">
           {[
             ["#about", "About"],
+            ["#portfolio", "Portfolio"],
             ["#experience", "Experience"],
             ["#skills", "Skills"],
-            ["#portfolio", "Portfolio"],
             ["#contact", "Contact"],
           ].map(([href, label]) => (
             <a key={href} href={href} className="block py-1">
@@ -356,13 +357,22 @@ function Hero({ profile }) {
           <div className="mt-6 flex gap-3">
             <HashLink
               className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-              smooth to="/#portfolio"
+              smooth
+              to="/#portfolio"
             >
               View Portfolio <ArrowRight className="h-4 w-4" />
             </HashLink>
             <HashLink
               className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
-              smooth to="/#contact"
+              smooth
+              to="/role/current-role"
+            >
+              What I Do <Briefcase className="h-4 w-4" />
+            </HashLink>
+            <HashLink
+              className="inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+              smooth
+              to="/#contact"
             >
               Contact <Mail className="h-4 w-4" />
             </HashLink>
@@ -437,7 +447,7 @@ function Hero({ profile }) {
 function About({ profile }) {
   return (
     <Section id="about" title="About" icon={Code2}>
-      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
         {profile.summary}
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
@@ -489,9 +499,71 @@ function Experience({ items }) {
                   <li key={i}>{b.text}</li>
                 ))}
             </ul>
+            {e.detailSlug && (
+              <div className="mt-2">
+                <Link
+                  to={`/role/${e.detailSlug}`}
+                  className="text-sm underline"
+                >
+                  Read deep dive
+                </Link>
+              </div>
+            )}
           </div>
         ))}
       </div>
+    </Section>
+  );
+}
+
+function RoleDeepDives() {
+  const [items, setItems] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    (async () => {
+      const data = await fetchJSON("content/roles/index.json", []);
+      setItems(data);
+      setLoading(false);
+    })();
+  }, []);
+
+  return (
+    <Section id="roles" title="Role Deep Dives" icon={Briefcase}>
+      {loading ? (
+        <div className="text-sm text-zinc-500">Loading…</div>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((r) => (
+            <button
+              key={r.slug}
+              onClick={() => navigate(`/role/${r.slug}`)}
+              className="text-left rounded-2xl border p-4 hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800 flex"
+            >
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{r.title}</div>
+                <div className="mt-1 text-sm text-zinc-500 line-clamp-2">
+                  {r.summary}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(r.tags || []).map((t, i) => (
+                    <Chip key={i}>{t}</Chip>
+                  ))}
+                </div>
+              </div>
+              {r.cover && (
+                <img
+                  src={withBase(r.cover)}
+                  alt=""
+                  loading="lazy"
+                  className="ml-3 hidden sm:block h-16 w-28 object-cover rounded-lg shrink-0"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
     </Section>
   );
 }
@@ -684,7 +756,8 @@ function Footer() {
   );
 }
 
-// ---------- Portfolio Detail ----------
+// ---------- Pages ----------
+
 function PortfolioPage() {
   const { slug } = useParams();
   const [content, setContent] = useState(null);
@@ -774,7 +847,126 @@ function PortfolioPage() {
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
-            components={{ img: ImgMD, video: VideoMD, source: SourceMD }}
+            components={{
+              img: ImgMD,
+              video: VideoMD,
+              source: SourceMD,
+              iframe: IframeMD,
+            }}
+          >
+            {content}
+          </ReactMarkdown>
+        </article>
+      )}
+    </main>
+  );
+}
+
+function RolePage() {
+  const { slug } = useParams();
+  const [content, setContent] = React.useState("");
+  const [meta, setMeta] = React.useState(null);
+  const [manifestItem, setManifestItem] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    (async () => {
+      const raw = await fetchText(
+        `content/roles/${slug}.md`,
+        "# Not Found\nThis page will be added soon."
+      );
+      const { meta, body } = parseFrontmatterBlock(raw);
+      setMeta(meta);
+      setContent(body);
+      const man = await fetchJSON("content/roles/index.json", []);
+      setManifestItem(man.find((x) => x.slug === slug) || null);
+      setLoading(false);
+    })();
+  }, [slug]);
+
+  const coverSrc = (meta && meta.cover) || (manifestItem && manifestItem.cover);
+
+  const IframeMD = ({ node, ...props }) => (
+    <div
+      className="relative w-full rounded-2xl overflow-hidden border dark:border-zinc-800"
+      style={{ paddingTop: "56.25%" }}
+    >
+      <iframe
+        {...props}
+        className="absolute inset-0 w-full h-full"
+        loading="lazy"
+        allowFullScreen
+      />
+    </div>
+  );
+
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-10">
+      <Link to="/" className="text-sm text-zinc-500 hover:underline">
+        ← Back
+      </Link>
+      {loading ? (
+        <div className="mt-6 text-sm text-zinc-500">Loading…</div>
+      ) : (
+        <article className="prose prose-zinc dark:prose-invert max-w-none">
+          {coverSrc && (
+            <img
+              src={withBase(String(coverSrc).replace(/^\/+/, ""))}
+              alt=""
+              className="w-full rounded-2xl border dark:border-zinc-800 mb-6 object-cover"
+            />
+          )}
+          {meta && (
+            <header>
+              <h1 className="mb-2">{meta.title || slug}</h1>
+              <div className="not-prose flex flex-wrap gap-2 mb-4">
+                {Array.isArray(meta.tech) &&
+                  meta.tech.map((t, i) => <Chip key={i}>{t}</Chip>)}
+                {meta.year && <Chip>{meta.year}</Chip>}
+              </div>
+              <div className="not-prose flex flex-wrap gap-2 mb-6">
+                {meta.links?.video && (
+                  <a
+                    className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                    href={meta.links.video}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Youtube className="h-4 w-4" /> Watch video
+                  </a>
+                )}
+                {meta.links?.github && (
+                  <a
+                    className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                    href={meta.links.github}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Github className="h-4 w-4" /> Source
+                  </a>
+                )}
+                {meta.links?.page && (
+                  <a
+                    className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 dark:border-zinc-800"
+                    href={meta.links.page}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink className="h-4 w-4" /> Website
+                  </a>
+                )}
+              </div>
+            </header>
+          )}
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            components={{
+              img: ImgMD,
+              video: VideoMD,
+              source: SourceMD,
+              iframe: IframeMD,
+            }}
           >
             {content}
           </ReactMarkdown>
@@ -797,6 +989,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home site={site} />} />
             <Route path="/portfolio/:slug" element={<PortfolioPage />} />
+            <Route path="/role/:slug" element={<RolePage />} />
           </Routes>
         </Router>
       </div>
@@ -812,6 +1005,7 @@ function Home({ site }) {
         <About profile={site.profile} />
         <Portfolio manifest={site.manifest} />
         <Experience items={site.experience} />
+        <RoleDeepDives />
         <Skills groups={site.skills} />
         <Education items={site.education} />
         <Contact profile={site.profile} settings={site.settings} />
