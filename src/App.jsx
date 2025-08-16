@@ -67,8 +67,10 @@ async function fetchText(relPath, fallback) {
 
 const isAbs = (u) =>
   /^([a-z]+:)?\/\//i.test(u) || u?.startsWith("data:") || u?.startsWith("#");
+
 const addBase = (u) =>
   isAbs(u) ? u : withBase(String(u || "").replace(/^\/+/, ""));
+
 const ImgMD = (props) => (
   <img
     {...props}
@@ -77,6 +79,7 @@ const ImgMD = (props) => (
     className="rounded-xl"
   />
 );
+
 const VideoMD = (props) => (
   <video
     {...props}
@@ -85,7 +88,22 @@ const VideoMD = (props) => (
     className="w-full rounded-2xl border dark:border-zinc-800"
   />
 );
+
 const SourceMD = (props) => <source {...props} src={addBase(props.src)} />;
+
+const IframeMD = ({ node, ...props }) => (
+  <div
+    className="relative w-full rounded-2xl overflow-hidden border dark:border-zinc-800"
+    style={{ paddingTop: "56.25%" }}
+  >
+    <iframe
+      {...props}
+      className="absolute inset-0 w-full h-full"
+      loading="lazy"
+      allowFullScreen
+    />
+  </div>
+);
 
 // ---------- Fallbacks (kept minimal to avoid blank UI if JSON missing) ----------
 const FALLBACK = {
@@ -885,20 +903,6 @@ function RolePage() {
   }, [slug]);
 
   const coverSrc = (meta && meta.cover) || (manifestItem && manifestItem.cover);
-
-  const IframeMD = ({ node, ...props }) => (
-    <div
-      className="relative w-full rounded-2xl overflow-hidden border dark:border-zinc-800"
-      style={{ paddingTop: "56.25%" }}
-    >
-      <iframe
-        {...props}
-        className="absolute inset-0 w-full h-full"
-        loading="lazy"
-        allowFullScreen
-      />
-    </div>
-  );
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
