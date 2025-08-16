@@ -1,9 +1,9 @@
 ---
-title: "Bunny Hopping — FPS Sandbox/Prototype"
-role: "Gameplay Programmer"
-tech: ["C++","Unreal Engine 5","ALS","Enhanced Input","Replication","Motion Warping"]
+title: Bunny Hopping — FPS Sandbox/Prototype
+role: Gameplay Programmer
+tech: ["Unreal Engine 5","C++","ALS","Enhanced Input","Replication","Motion Warping"]
 year: 2025
-cover: "/assets/portfolio/bunny-hopping-cover.jpg"
+cover: content/portfolio/bunny-hopping-cover.jpg
 ---
 
 ## Overview
