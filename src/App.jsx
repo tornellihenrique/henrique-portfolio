@@ -11,6 +11,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { HashLink } from "react-router-hash-link";
+import { jsPDF } from "jspdf";
 import {
   Mail,
   Linkedin,
@@ -39,7 +40,7 @@ import {
     • Uses Vite BASE_URL to fetch from the correct path on GitHub Pages
 */
 
-// ---------- Vite base helpers ----------
+// ----------helpers ----------
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "/");
 const withBase = (relPath) => BASE + relPath.replace(/^\/+/, "");
 
@@ -104,6 +105,205 @@ const IframeMD = ({ node, ...props }) => (
     />
   </div>
 );
+
+function splitPara(doc, text, maxW) {
+  const paragraphs = String(text || "").split(/\n{2,}/);
+  return paragraphs.flatMap((p, i) => {
+    const lines = doc.splitTextToSize(p.replace(/\n/g, " "), maxW);
+    return i < paragraphs.length - 1 ? [...lines, ""] : lines;
+  });
+}
+
+async function generateResumePdf(site) {
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const M = 48;
+  const maxW = pageW - M * 2;
+  let y = M;
+
+  const rule = (space = 10) => {
+    y += space;
+    doc.setDrawColor(200);
+    doc.line(M, y, pageW - M, y);
+    y += 8 * 2;
+  };
+  const ensure = (h = 14) => {
+    if (y + h > pageH - M) {
+      doc.addPage();
+      y = M;
+    }
+  };
+  const h1 = (t) => {
+    y += 12;
+    ensure(30);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text(t, M, y);
+    y += 24;
+  };
+  const h2 = (t) => {
+    y += 8;
+    ensure(22);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text(t, M, y);
+    y += 16;
+  };
+  const small = (t) => {
+    y += 6;
+    ensure(12);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.text(t, M, y);
+    y += 12;
+  };
+  const body = (t) => {
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    splitPara(doc, t, maxW).forEach((line) => {
+      ensure(14);
+      doc.text(line, M, y);
+      y += 14;
+    });
+  };
+  
+  const softWrap = (s) =>
+    String(s).replace(/\S{30,}/g, (m) => m.replace(/(.{12})/g, "$1\u200B"));
+
+  function bullets(arr) {
+    const indent = 14; // space after bullet
+    const lineH = 14;
+    const maxLineW = maxW - indent; // use page-wide maxW from above
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+
+    (arr || []).forEach((t) => {
+      const lines = doc.splitTextToSize(softWrap(t), maxLineW);
+
+      // first line: draw bullet glyph, then text
+      ensure(lineH);
+      doc.text("•", M, y);
+      doc.text(lines[0], M + indent, y);
+      y += lineH;
+
+      // continuation lines: indent without bullet
+      for (let i = 1; i < lines.length; i++) {
+        ensure(lineH);
+        doc.text(lines[i], M + indent, y);
+        y += lineH;
+      }
+    });
+  }
+
+  // Header
+  const p = site.profile || {};
+  h1(`${p.name || ""}`);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  if (p.title) {
+    doc.text(p.title, M, y);
+    y += 16;
+  }
+
+  // Contact row
+  const contactBits = [p.location, p.email, p.phone].filter(Boolean);
+  if (contactBits.length) {
+    small(contactBits.join("  •  "));
+  }
+
+  rule();
+
+  // Summary
+  h2("Summary");
+  body(p.summary || "");
+
+  // Highlights
+  if (Array.isArray(p.highlights) && p.highlights.length) {
+    h2("Highlights");
+    const line = p.highlights
+      .map((h) => `${h.label}${h.value ? `: ${h.value}` : ""}`)
+      .join("  •  ");
+    small(line);
+  }
+
+  // Skills
+  const skills = site.skills || [];
+  if (skills.length) {
+    rule();
+    h2("Skills");
+    skills.forEach((g) => small(`${g.group}: ${(g.items || []).join(", ")}`));
+  }
+
+  // Experience
+  const exp = site.experience || [];
+  if (exp.length) {
+    rule();
+    h2("Experience");
+    exp.forEach((e) => {
+      y += 14;
+      ensure(30);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.text(`${e.role || ""} — ${e.company || ""}`, M, y);
+      y += 14;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      const when = `${e.start_text ?? e.start ?? ""} — ${
+        e.end_text ?? (e.present ? "Present" : e.end ?? "")
+      }`;
+      const dur = e?.duration?.text ? `  •  ${e.duration.text}` : "";
+      const loc = e.location ? `  •  ${e.location}` : "";
+      doc.text(`${when}${dur}${loc}`, M, y);
+      y += 12;
+
+      // merge tech + mgr bullets (resume version)
+      const lines = (e.bullets || []).map((b) => b.text).slice(0, 6);
+      bullets(lines);
+      y += 2;
+    });
+  }
+
+  // Education
+  const edu = site.education || [];
+  if (edu.length) {
+    rule();
+    h2("Education");
+    edu.forEach((ed) => {
+      y += 14;
+      ensure(24);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.text(ed.name || "", M, y);
+      y += 14;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      if (ed.period) {
+        doc.text(ed.period, M, y);
+        y += 12;
+      }
+      if (ed.summary) {
+        body(ed.summary);
+      }
+      if (ed.finalWorkTitle) {
+        small(`Final work: ${ed.finalWorkTitle}`);
+      }
+      y += 4;
+    });
+  }
+
+  // Footer page numbers
+  const count = doc.getNumberOfPages();
+  for (let i = 1; i <= count; i++) {
+    doc.setPage(i);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.text(`${i}/${count}`, pageW - M, pageH - 16, { align: "right" });
+  }
+
+  doc.save(`${(p.name || "resume").replace(/\s+/g, "_")}_Resume.pdf`);
+}
 
 // ---------- Fallbacks (kept minimal to avoid blank UI if JSON missing) ----------
 const FALLBACK = {
@@ -763,13 +963,13 @@ function Contact({ profile, settings }) {
   );
 }
 
-function Footer() {
+function Footer({ site }) {
   return (
     <footer className="mt-10 py-8 text-center text-xs text-zinc-500">
       © {new Date().getFullYear()} — Built with React & Tailwind.{" "}
-      <a className="underline" href="#" onClick={() => window.print()}>
-        Print / Save PDF
-      </a>
+      <button onClick={() => generateResumePdf(site)} className="underline">
+        Download PDF résumé
+      </button>
     </footer>
   );
 }
@@ -1013,7 +1213,7 @@ function Home({ site }) {
         <Skills groups={site.skills} />
         <Education items={site.education} />
         <Contact profile={site.profile} settings={site.settings} />
-        <Footer />
+        <Footer site={site} />
       </div>
     </main>
   );
