@@ -24,6 +24,37 @@
     "cover": "content/portfolio/flag-capture/cover.jpg"
   },
   {
+    "slug": "bunny-hopping",
+    "title": "Bunny Hopping — FPS Sandbox/Prototype",
+    "tags": [
+      "C++",
+      "Unreal Engine 5",
+      "ALS",
+      "Enhanced Input",
+      "Replication",
+      "Motion Warping"
+    ],
+    "year": 2025,
+    "summary": "Replicated FPS/TP system with GoldSrc-style bunny hopping, dual-mesh first/third-person pipeline, hotbar-driven inventory & weapons, team-vs-team battle mode with match phases, and a sandbox mode with UI overlays.",
+    "cover": "content/portfolio/bunny-hopping/cover.jpg"
+  },
+  {
+    "slug": "project-reima",
+    "title": "Reima — First/Third-Person Combat Prototype",
+    "summary": "ALS retargeted to UE5 Manny/Metahuman, FP/TP switch, spatial equipment inventory, holster/attach system, limp overlay, explosives & bullet physics, damage/death, and a drivable car rewritten from the Matrix demo.",
+    "tags": ["Unreal", "C++", "ALS", "Metahuman", "Vehicles", "Inventory"],
+    "year": 2024,
+    "cover": "content/portfolio/project-reima/cover.jpg"
+  },
+  {
+    "slug": "bullet-system",
+    "title": "Bullet System — Advanced Ballistics & Replicated Weapons",
+    "summary": "Teaching prototype: sub-stepped ballistics with drag & wind, penetration/ricochet, pooling; replicated weapon actor and FP sway.",
+    "tags": ["Unreal", "C++", "Ballistics", "Replication"],
+    "year": 2024,
+    "cover": "content/portfolio/bullet-system/cover.jpg"
+  },
+  {
     "slug": "fps-prototype-als",
     "title": "FPS Prototype — ALS-Based First-Person Feel",
     "summary": "ALS locomotion + custom first-person presentation; replicated projectile weapons, throwables (grenade/C4), and a generic item system.",
@@ -93,36 +124,5 @@
     "tags": ["Unreal", "C++", "Replication", "Movement", "Internal"],
     "year": 2023,
     "cover": "content/portfolio/grappling-hook/cover.jpg"
-  },
-  {
-    "slug": "project-reima",
-    "title": "Reima — First/Third-Person Combat Prototype",
-    "summary": "ALS retargeted to UE5 Manny/Metahuman, FP/TP switch, spatial equipment inventory, holster/attach system, limp overlay, explosives & bullet physics, damage/death, and a drivable car rewritten from the Matrix demo.",
-    "tags": ["Unreal", "C++", "ALS", "Metahuman", "Vehicles", "Inventory"],
-    "year": 2024,
-    "cover": "content/portfolio/project-reima/cover.jpg"
-  },
-  {
-    "slug": "bullet-system",
-    "title": "Bullet System — Advanced Ballistics & Replicated Weapons",
-    "summary": "Teaching prototype: sub-stepped ballistics with drag & wind, penetration/ricochet, pooling; replicated weapon actor and FP sway.",
-    "tags": ["Unreal", "C++", "Ballistics", "Replication"],
-    "year": 2024,
-    "cover": "content/portfolio/bullet-system/cover.jpg"
-  },
-  {
-    "slug": "bunny-hopping",
-    "title": "Bunny Hopping — FPS Sandbox/Prototype",
-    "tags": [
-      "C++",
-      "Unreal Engine 5",
-      "ALS",
-      "Enhanced Input",
-      "Replication",
-      "Motion Warping"
-    ],
-    "year": 2025,
-    "summary": "Replicated FPS/TP system with GoldSrc-style bunny hopping, dual-mesh first/third-person pipeline, hotbar-driven inventory & weapons, team-vs-team battle mode with match phases, and a sandbox mode with UI overlays.",
-    "cover": "content/portfolio/bunny-hopping/cover.jpg"
   }
 ]
